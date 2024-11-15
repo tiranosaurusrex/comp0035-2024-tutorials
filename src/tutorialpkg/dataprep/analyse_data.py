@@ -50,15 +50,34 @@ def describe_dataframe(df):
     print("\nColumns with missing values:")
     print(df.isnull().sum())
 
+def data_prep(df_raw):
+        # Activity 4: Convert the data type float64 columns to int
+    float_columns = df_raw.select_dtypes(include=['float64']).columns
+    for col in float_columns:
+        try:
+            df_raw[col] = df_raw[col].astype('int')
+        except ValueError as e:
+            print(f"Error, can't convert column {df_raw[col].name} to int: {e}")
+
+    print("\nData types of the float columns after conversion:")
+    print(df_raw.loc[:, float_columns].dtypes)
+
+    # Activity 4: Convert the start and end columns from object to datetime
+    df_raw['start'] = pd.to_datetime(df_raw['start'], format='%d/%m/%Y')
+    df_raw['end'] = pd.to_datetime(df_raw['end'], format='%d/%m/%Y')
+
+    print("\nData types of the start/end columns after conversion:")
+    print(df_raw.loc[:, ['start', 'end']].dtypes)
+
 if __name__ == "__main__":
+
+    
     # Filepath of the csv data file
     paralympics_datafile_csv = Path(__file__).parent.parent.joinpath("data", "paralympics_events_raw.csv")
 
     # Filepath of the Excel data file.
     paralympics_datafile_excel = Path(__file__).parent.parent.joinpath("data", "paralympics_all_raw.xlsx")
 
-    # Filepath of the NPC codes csv data file
-    npc_csv = Path(__file__).parent.parent.joinpath("data", "npc_codes.csv")
 
     # Read the data from the files into a Pandas dataframe. Version includes error handling for the file read
     try:
@@ -75,7 +94,7 @@ if __name__ == "__main__":
     describe_dataframe(events_excel_df)
     describe_dataframe(medal_standings_df)
 
-    # This version outputs to a text file in  the tutor_solutiom directory rather than printing to the console
+    # This version outputs to a text file in dataprep directory rather than printing to the console
     describe_output_file = Path(__file__).parent.joinpath("describe_output.txt")
     with open(describe_output_file, 'w') as f:
         # Redirect stdout to a file temporarily
@@ -89,6 +108,7 @@ if __name__ == "__main__":
         f.close()
         # Redirect stdout back to the console
         sys.stdout = sys.__stdout__
+
 
 
     
