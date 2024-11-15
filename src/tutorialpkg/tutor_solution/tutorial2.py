@@ -210,19 +210,16 @@ if __name__ == "__main__":
         sys.stdout = sys.__stdout__
 
     # Activity 4: Call the function to prepare the data for analysis to change the float data types to int in events_csv_df
-    # prepare_event_data(events_csv_df)
+    prepare_event_data(events_csv_df)
 
     # Activity 4: Print the values in the start and end columns of the dataframe
-    # print("\nValues in the 'start' column:")
-    # print(events_csv_df.loc[:, ['start', 'end']])
-
-    # Activity 4: Call the function to prepare the data for analysis to change the data types of the start and end columns
-    # prepare_event_data(events_csv_df)
+    print("\nValues in the 'start' column:")
+    print(events_csv_df.loc[:, ['start', 'end']])
 
     # Activities 5-8: Call the function to prepare the data and merge the event data with the NPC data
     df_npc_codes = pd.read_csv(npc_csv, usecols=['Code', 'Name'], encoding='utf-8', encoding_errors='ignore')
-    # merged_df = prepare_event_data(events_csv_df, df_npc_codes)
+    merged_df = prepare_event_data(events_csv_df, df_npc_codes)
 
     # Activity 10: Final call to the function to return the prepared data to a dataframe and save to file
     prepared_df = prepare_event_data(events_csv_df, df_npc_codes)
-    # print(prepared_df)
+    print(prepared_df)
